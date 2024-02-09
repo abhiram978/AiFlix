@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .movie {
+            background-color: #111111;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px 8px 0 0;
+        }
+        .movie-info {
+            padding: 20px;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .movie-info h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .movie-info p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .movie-info ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .movie-info ul li {
+            margin: 5px 0;
+        }
+        .watch-btn {
+            background-color: #e50914;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .watch-btn:hover {
+            background-color: #ff3333;
+        }
+        /* Added styling for the signature */
+        .signature {
+          font-size: 12px;
+          color: #cccccc;
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% for movie in movies %}
+        <div class="movie">
+            <img src="{{ movie.get('full-size cover url') }}" alt="{{ movie['title'] }}">
+            <div class="movie-info">
+                <h3>{{ movie['title'] }}</h3>
+                <p>• {{ movie.get('year') }}</p>
+                <a href="{{ url_for('watch', imdb_id=movie.movieID) }}" class="watch-btn">Watch Now</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+</body>
+<p class="signature">Developed By Abhiram Ch</p>
+</html>
