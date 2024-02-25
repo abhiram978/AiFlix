@@ -76,6 +76,3 @@ def watch(imdb_id):
     movie_info = get_movie_info(imdb_id)
     embed_url = f'https://vidsrc.to/embed/movie/tt{imdb_id}'
     return render_template('watch.html', embed_url=embed_url, movie_info=movie_info)
-
-if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
