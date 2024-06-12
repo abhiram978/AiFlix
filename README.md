@@ -26,21 +26,6 @@ Home Page: Search for any movie or TV show.
 Details Page: Click on a movie to see detailed information.
 Reviews: Read or write reviews for your favorite movies.
 
-📁 Project Structure
-
-AiFlix/
-│
-├── templates/          # HTML templates
-│   ├── base.html       # Base template
-│   ├── index.html      # Home page
-│   └── movie.html      # Movie details page
-│
-├── static/             # Static files (CSS, JS, Images)
-│
-├── main.py             # Main application file
-│
-└── requirements.txt    # Python dependencies
-
 👥 Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
