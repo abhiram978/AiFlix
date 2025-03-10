@@ -11,27 +11,27 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
+
         iframe {
             width: 100%;
             height: 80vh;
             border: none;
         }
+
         .container {
             padding: 20px;
         }
-        h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #ffffff;
+
+        h2, p, strong {
+            margin: 5px 0;
         }
+
         p {
-            margin-bottom: 5px;
             color: #b0b0b0;
         }
-        strong {
-            color: #ffffff;
-        }
+
         .signature {
             font-size: 12px;
             color: #cccccc;
@@ -39,10 +39,21 @@
             bottom: 10px;
             right: 10px;
         }
+
+        /* Invisible clickable area for fullscreen */
+        .fullscreen-area {
+            position: absolute;
+            right: 0;
+            bottom: 20%; /* Adjust depending on iframe height */
+            width: 71px;
+            height: 63px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <iframe src="{{ embed_url }}" allow="fullscreen; autoplay; encrypted-media;" allowfullscreen></iframe>
+
+    <iframe id="movieFrame" src="{{ embed_url }}" allowfullscreen></iframe>
 
     <div class="container">
         <h2>{{ movie_info.title }}</h2>
@@ -54,5 +65,32 @@
     </div>
 
     <p class="signature">Developed By Abhiram Ch</p>
+
+    <!-- Invisible fullscreen trigger -->
+    <div class="fullscreen-area" onclick="activateFullscreen()"></div>
+
+    <script>
+        const iframe = document.getElementById('movieFrame');
+
+        function activateFullscreen() {
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.mozRequestFullScreen) { /* Firefox */
+                iframe.mozRequestFullScreen();
+            } else if (iframe.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) { /* IE/Edge */
+                iframe.msRequestFullscreen();
+            }
+        }
+
+        // Listen for 'f' key press to fullscreen
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'f' || event.key === 'F') {
+                activateFullscreen();
+            }
+        });
+    </script>
+
 </body>
 </html>
