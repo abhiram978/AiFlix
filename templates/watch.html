@@ -7,14 +7,15 @@
     <style>
         body {
             background-color: #000000;
-            color: #ffffff; /* White text color */
+            color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-        embed {
-            width: 100%; /* Full width */
-            height: 80vh; /* Adjust height as needed */
+        iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
         }
         .container {
             padding: 20px;
@@ -22,28 +23,27 @@
         h2 {
             font-size: 24px;
             margin-bottom: 10px;
-            color: #ffffff; /* White text color */
+            color: #ffffff;
         }
         p {
             margin-bottom: 5px;
-            color: #b0b0b0; /* Light grey text color */
+            color: #b0b0b0;
         }
         strong {
-            color: #ffffff; /* White text color */
+            color: #ffffff;
         }
-        /* Added styling for the signature */
         .signature {
-          font-size: 12px;
-          color: #cccccc;
-          position: absolute;
-          bottom: 10px;
-          right: 10px;
+            font-size: 12px;
+            color: #cccccc;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
         }
     </style>
 </head>
 <body>
-    <embed src="{{ embed_url }}" allowfullscreen>
-    
+    <iframe src="{{ embed_url }}" allow="fullscreen; autoplay; encrypted-media;" allowfullscreen></iframe>
+
     <div class="container">
         <h2>{{ movie_info.title }}</h2>
         <p><strong>Release Date:</strong> {{ movie_info.release_date }}</p>
@@ -52,6 +52,7 @@
         <p><strong>Description:</strong> {{ movie_info.description }}</p>
         <p><strong>IMDb Rating:</strong> {{ movie_info.rating }}</p>
     </div>
+
+    <p class="signature">Developed By Abhiram Ch</p>
 </body>
-<p class="signature">Developed By Abhiram Ch</p>
 </html>
