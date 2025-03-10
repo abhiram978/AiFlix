@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 import imdb
-import threading
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movies.db'
@@ -10,7 +9,7 @@ db = SQLAlchemy(app)
 # Initialize IMDbPY
 ia = imdb.IMDb()
 
-# Define Movie model
+# ---------------------- Database Model ----------------------
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     imdb_id = db.Column(db.String(10), unique=True, nullable=False)
@@ -20,20 +19,25 @@ class Movie(db.Model):
     def __repr__(self):
         return f"Movie('{self.title}', '{self.clicks}')"
 
-# Create the database tables within the application context
+# ---------------------- Create DB Tables ----------------------
 with app.app_context():
     db.create_all()
 
-# Function to fetch movie information
+# ---------------------- Movie Info Fetcher ----------------------
 def get_movie_info(movie_id):
     movie = ia.get_movie(movie_id)
     title = movie.get('title', 'Unknown Title')
     release_date = movie.get('year', 'Unknown')
-    rating = movie.get('rating')
+    rating = movie.get('rating', 'N/A')
     genre = ', '.join(movie.get('genres', ['Unknown']))
-    description = movie.get('plot', 'No description available')
+
+    # Handle plot parsing properly
+    plot_list = movie.get('plot', ['No description available'])
+    description = plot_list[0].split('::')[0]  # Get the first plot and remove trailing authors
+
+    # Get top 5 starring actors
     stars = ', '.join([actor['name'] for actor in movie.get('cast', [])[:5]])
-    
+
     return {
         'title': title,
         'release_date': release_date,
@@ -43,9 +47,9 @@ def get_movie_info(movie_id):
         'starring': stars
     }
 
+# ---------------------- Routes ----------------------
 @app.route('/')
 def index():
-    # Get top 5 trending movies
     trending_movies = Movie.query.order_by(Movie.clicks.desc()).limit(5).all()
     return render_template('index.html', trending_movies=trending_movies)
 
@@ -57,12 +61,10 @@ def search():
     
     movies = ia.search_movie(query)
     top_4_movies = movies[:4] if len(movies) >= 4 else movies
-    
     return render_template('search.html', movies=top_4_movies)
 
 @app.route('/watch/<imdb_id>')
 def watch(imdb_id):
-    # Update clicks for the movie
     movie = Movie.query.filter_by(imdb_id=imdb_id).first()
     if movie:
         movie.clicks += 1
@@ -76,3 +78,7 @@ def watch(imdb_id):
     movie_info = get_movie_info(imdb_id)
     embed_url = f'https://vidsrc.to/embed/movie/tt{imdb_id}'
     return render_template('watch.html', embed_url=embed_url, movie_info=movie_info)
+
+# ---------------------- Run Server ----------------------
+if __name__ == '__main__':
+    app.run(debug=True)
